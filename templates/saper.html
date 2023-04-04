@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="IE=edge">
+  <title>Saper</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+    }
+    td {
+      border: 1px solid black;
+      padding: 10px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      width: 40px;
+      height: 40px;
+    }
+    td.bomb {
+      background-color: red;
+    }
+    td.zero {
+      background-color: lightgray;
+    }
+    td.one {
+      color: blue;
+    }
+    td.two {
+      color: green;
+    }
+    td.three {
+      color: red;
+    }
+    td.four {
+      color: darkblue;
+    }
+    td.five {
+      color: darkred;
+    }
+    td.six {
+      color: teal;
+    }
+    td.seven {
+      color: black;
+    }
+    td.eight {
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    {% for row in game_field %}
+      <tr>
+        {% for cell in row %}
+          {% if cell == '128163;' %}
+            <td class="bomb">&#{{ cell }}</td>
+          {% elif cell == 0 %}
+            <td class="zero"></td>
+          {% elif cell == 1 %}
+            <td class="one">{{ cell }}</td>
+          {% elif cell == 2 %}
+            <td class="two">{{ cell }}</td>
+          {% elif cell == 3 %}
+            <td class="three">{{ cell }}</td>
+          {% elif cell == 4 %}
+            <td class="four">{{ cell }}</td>
+          {% elif cell == 5 %}
+            <td class="five">{{ cell }}</td>
+          {% elif cell == 6 %}
+            <td class="six">{{ cell }}</td>
+          {% elif cell == 7 %}
+            <td class="seven">{{ cell }}</td>
+          {% elif cell == 8 %}
+            <td class="eight">{{ cell }}</td>
+          {% endif %}
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>

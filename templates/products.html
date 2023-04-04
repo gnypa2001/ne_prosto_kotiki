@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Grocery Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+          }
+          
+          h1 {
+            text-align: center;
+            color: #4CAF50;
+          }
+          
+          div {
+            display: inline-block;
+            width: 250px;
+            margin: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #fff;
+          }
+          
+          img {
+            max-width: 100%;
+            height: 300px;
+            margin-bottom: 10px;
+          }
+          
+          h2 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+          }
+          
+          p {
+            font-size: 1rem;
+            color: #888;
+          }
+    </style>
+</head>
+<body>
+	<h1>Товары</h1>
+    {% for product in spisok %}
+    <div>
+		<img src={{product.link}}>
+		<h2>{{product.name}}</h2>
+		<p>{{product.price}}</p>
+	</div>
+    {% endfor %}
+	<div>
+		<img src="https://www.meme-arsenal.com/memes/5ba73d1f4ff36b59825c28574db0de4b.jpg">
+		<h2>удивленный котик</h2>
+		<p>50 рублей</p>
+	</div>
+	<div>
+		<img src="http://memchik.ru/images/mems/5d94977f21248.jpg">
+		<h2>котик дебошЫр</h2>
+		<p>200 уе в час</p>
+	</div>
+	<div>
+		<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8vD0_zkG3Fnn45L49ZwlODXgPtRxwaRHxwA&usqp=CAU">
+		<h2>милаха</h2>
+		<p>бесценен</p>
+	</div>
+	<div>
+		<img src="https://img-fotki.yandex.ru/get/4407/79015228.136/0_9d230_33ef3c68_XL.jpg">
+		<h2>котик наркоман</h2>
+		<p>отдадим бесплатно в хороше руки</p>
+	</div>
+	
+</body>
+</html>
