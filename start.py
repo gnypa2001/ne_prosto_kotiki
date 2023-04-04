@@ -21,7 +21,13 @@ def owner(name = "Пират Робертс", descr = """Ужасный Пира
     return render_template("owner.html", link = user.link, name= user.name, descr = user.descr)
 
 
+@app.route('/add_product')
+def add_product():
+    return render_template("add_product.html")
+
+
 @app.route('/products')
+@app.route('/products', methods=["POST"])
 def products():
 
     # spisok = [Product("https://www.meme-arsenal.com/memes/5ba73d1f4ff36b59825c28574db0de4b.jpg", 
@@ -45,10 +51,11 @@ def products():
 
     with open("products.json", "r") as file:
         temp = json.load(file)
-        
-    
+    if request.form['name'] != "" and request.form['link'] != "" and request.form['price'] != "":
+        temp[request.form['name']] = {"photo": request.form['link'], "price": request.form['price']}
+        with open("products.json", "w") as file:
+            json.dump(temp, file, indent=3)
     return render_template("products.html")
-
 
 
 @app.route('/user/<user>')
