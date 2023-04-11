@@ -20,7 +20,6 @@ def owner(name = "Пират Робертс", descr = """Ужасный Пира
     user = User("https://cs8.pikabu.ru/post_img/big/2017/10/19/10/1508435537126155184.jpg", name, descr)
     return render_template("owner.html", link = user.link, name= user.name, descr = user.descr)
 
-
 @app.route('/add_product')
 def add_product():
     return render_template("add_product.html")
@@ -51,11 +50,18 @@ def products():
 
     with open("products.json", "r") as file:
         temp = json.load(file)
-    if request.form['name'] != "" and request.form['link'] != "" and request.form['price'] != "":
-        temp[request.form['name']] = {"photo": request.form['link'], "price": request.form['price']}
-        with open("products.json", "w") as file:
-            json.dump(temp, file, indent=3)
-    return render_template("products.html")
+    if len(request.get_data()) != 0:
+        if request.form['name'] != "" and request.form['link'] != "" and request.form['price'] != "":
+            temp[request.form['name']] = {"photo": request.form['link'], "price": request.form['price']}
+            with open("products.json", "w") as file:
+                json.dump(temp, file, indent=3)
+            
+    
+    spisok = []
+    for name in temp:
+        spisok.append(Product(temp[name]['photo'], name, temp[name]['price']))
+    print(spisok)
+    return render_template("products.html", spisok=spisok)
 
 
 @app.route('/user/<user>')
