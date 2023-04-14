@@ -66,38 +66,8 @@ def fio(name, father, surname):
 Фамилия {surname}
 """
 
-# @app.route('/saper_post')
-# def saper_post():
-#     return render_template ("saper_post.html")
-    
-
-
-
-# @app.route('/saper/<height>_<width>_<bombs>')
-# @app.route('/saper', methods=["POST"])
-# def saper(height = 8, width = 8, bombs = 10):
-#     print(request.form['height'])
-#     try:
-#         if int(request.form['height']) <= 0 or int(request.form['width']) <= 0 or int(request.form['bombs']) <= 0:
-#             raise ValueError("Все параметры должны быть положительными")
-#         if int(request.form['bombs']) > int(request.form['height']) * int(request.form['width']):
-#             raise ValueError("Количество бомб не должно быть больше чем количество клеток")
-#     except ValueError as e:
-#         print("Ошибка:", e)
-#         return render_template("saper_post.html")
-#     except TypeError as e:
-#         print("Ошибка:", e)
-#         return render_template("saper_post.html")
-#     return render_template("saper.html", game_field = field(int(request.form['height']), int(request.form['width']), int(request.form['bombs'])))
-
 app.run(debug=True)
 
 
 
 
-
-# Реализовать сайт c продуктами, должны присутствовать страницы:
-
-# - О сайте
-# - Товаров (Название, Цена, Картинка)
-# - Профиль владельца (Имя, Возраст, Фото)
