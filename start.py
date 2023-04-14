@@ -4,8 +4,24 @@ from user import User
 import json
 app = Flask("Grocery")
 
+@app.route('/register')
+def register():
+    return render_template("login.html")
+
 @app.route('/')
+@app.route('/', methods=["POST"])
 def about():
+    
+    with open("logins.json", "r") as file:
+        temp = json.load(file)
+        
+    if 'login' in request.form and request.form['login'] != "" and \
+        'password' in request.form and request.form['password'] != "":
+        temp[request.form['login']] = request.form['password']
+        
+        with open("logins.json", "w") as file:
+            json.dump(temp, file, indent=3)
+                    
     return render_template("about.html")
 
 
@@ -19,6 +35,7 @@ def owner(name = "Пират Робертс", descr = """Ужасный Пира
     user = User("https://cs8.pikabu.ru/post_img/big/2017/10/19/10/1508435537126155184.jpg", name, descr)
     return render_template("owner.html", link = user.link, name= user.name, descr = user.descr)
 
+
 @app.route('/add_product')
 def add_product():
     return render_template("add_product.html")
@@ -29,6 +46,7 @@ def add_product():
 def products():
     with open("products.json", "r") as file:
         temp = json.load(file)
+
     if len(request.get_data()) != 0:
         if 'name' in request.form and request.form['name'] != "" and \
             'link' in request.form and request.form['link'] != "" and \
@@ -37,15 +55,17 @@ def products():
             with open("products.json", "w") as file:
                 json.dump(temp, file, indent=3)
         elif 'delete_name' in request.form and request.form['delete_name'] != "" :
-            temp.pop(request.form['delete_name'])
-            with open("products.json", "w") as file:
-                json.dump(temp, file, indent=3)
+            if request.form['delete_name'] in temp.keys():
+                temp.pop(request.form['delete_name'])
+                print(request.form['delete_name'])
+                with open("products.json", "w") as file:
+                    json.dump(temp, file, indent=3)
                 
     spisok = []
     for name in temp:
         spisok.append(Product(temp[name]['photo'], name, temp[name]['price']))
-    print(spisok)
     return render_template("products.html", spisok=spisok)
+
 
 
 @app.route('/user/<user>')
