@@ -1,39 +1,53 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from product import Product
 from user import User
 import json
 app = Flask("Grocery")
 
+@app.route('/')
+def home_page():
+    return render_template("index.html")
+
+
 @app.route('/register')
 def register():
-    return render_template("login.html")
+    return render_template("register.html")
 
-@app.route('/')
-@app.route('/', methods=["POST"])
+@app.route('/register_validation', methods=["POST"])
 def about():
-    
     with open("logins.json", "r") as file:
         temp = json.load(file)
-        
+
     if 'login' in request.form and request.form['login'] != "" and \
-        'password' in request.form and request.form['password'] != "":
-        temp[request.form['login']] = request.form['password']
-        
+        'password' in request.form and request.form['password'] != "": 
+        if request.form['login'] not in temp:
+            temp[request.form['login']] = request.form['password']
+        else:
+            return render_template("error_notification.html", error = "Извините, указанный email уже существует.")
         with open("logins.json", "w") as file:
             json.dump(temp, file, indent=3)
-                    
-    return render_template("about.html")
+    else:
+        return render_template("error_notification.html", error = "Имя или пароль пустые")
+        
+    return redirect(url_for("home_page"))
+
+@app.route('/login')
+def login():
+    return render_template("login.html")
 
 
-@app.route('/owner/<name>_<descr>')
-@app.route('/profile')
-@app.route('/owner')    
-def owner(name = "Пират Робертс", descr = """Ужасный Пират Робертс (Dread Pirate Roberts) настолько озабочен своей безопасностью, что не доверяет интернет-мессенджерам.<p>
-Забудьте о телефоне и Skype. Всего один раз за 8 месяцев переговоров об интервью я предложил ему встретиться в любом месте за пределами США.<p>
-«Исключено, – отрезал Робертс. – Я не встречаюсь даже со своими ближайшими помощниками».<p>
-Когда я задал вопрос о его настоящем имени и национальности, он отказался отвечать и на месяц прекратил общение."""):
-    user = User("https://cs8.pikabu.ru/post_img/big/2017/10/19/10/1508435537126155184.jpg", name, descr)
-    return render_template("owner.html", link = user.link, name= user.name, descr = user.descr)
+@app.route('/login_validation', methods=["POST"])
+def home():
+    with open("logins.json", "r") as file:
+        temp = json.load(file)
+    if 'login' in request.form and request.form['login'] != "" and \
+        'password' in request.form and request.form['password'] != "": 
+        if request.form['login'] not in temp or temp[request.form['login']] != request.form['password']:
+            return render_template("error_notification.html", error = "Имя или пароль неверные.")
+    else:
+        return render_template("error_notification.html", error = "Имя или пароль пустые") 
+    
+    return redirect(url_for("home_page"))
 
 
 @app.route('/add_product')
@@ -68,23 +82,6 @@ def products():
 
 
 
-@app.route('/user/<user>')
-def user_page(user):
-    return f"Hello i am {user}"
-
-@app.route('/odd_or_even/<number>')
-def odd_or_even(number):
-    return f"number {number} is even" if int(number) % 2 == 0 else f"number {number} is odd"
-
-
-
-@app.route('/fio/<name>_<father>_<surname>')
-def fio(name, father, surname):
-    return f"""
-Имя {name}<p>
-Отчество {father}<p>
-Фамилия {surname}
-"""
 
 app.run(debug=True)
 
