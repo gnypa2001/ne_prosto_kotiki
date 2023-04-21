@@ -18,8 +18,14 @@
     </style>
 </head>
 <body>
+    {{login}}
+    <p>
+    {{password}}
     <img src="{{link}}">
     <p>
     {{descr}}
+    <form action="/log_out" method="post">
+    <button type ="submit" value="Exit">
+    </form>
 </body>
 </html>

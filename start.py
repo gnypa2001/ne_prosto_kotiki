@@ -9,8 +9,18 @@ def home_page():
     return render_template("index.html")
 
 @app.route("/owner")
-def owner_page():
-    return render_template("owner.html")
+@app.route("/owner/<login>/<password>")
+def owner_page(login = None, password = None):
+    with open("cookies.json", "r") as file:
+        temp = json.load(file) 
+    if login == None or password == None:
+        if len(temp) == 0:
+            return redirect(url_for("login"))
+    
+        login = temp['name']
+        password = temp['password']
+    
+    return render_template("owner.html", login = login, password = password)
 
 @app.route('/register')
 def register():
@@ -29,6 +39,13 @@ def about():
             return render_template("error_notification.html", error = "Извините, указанный email уже существует.")
         with open("logins.json", "w") as file:
             json.dump(temp, file, indent=3)
+            
+        temp = {}
+        temp["name"] = request.form['login']
+        temp["password"] = request.form['password']
+        with open("cookies.json", "w") as file:
+            json.dump(temp, file, indent=3)
+            
     else:
         return render_template("error_notification.html", error = "Имя или пароль пустые")
         
@@ -47,17 +64,29 @@ def home():
         'password' in request.form and request.form['password'] != "": 
         if request.form['login'] not in temp or temp[request.form['login']] != request.form['password']:
             return render_template("error_notification.html", error = "Имя или пароль неверные.")
+        temp = {}
+        temp["name"] = request.form['login']
+        temp["password"] = request.form['password']
+        with open("cookies.json", "w") as file:
+            json.dump(temp, file, indent=3)
     else:
         return render_template("error_notification.html", error = "Имя или пароль пустые") 
     
-    return redirect(url_for("owner_page"))
+    return redirect(url_for("owner_page", login = request.form['login'], password = request.form['password']))
 
 
 @app.route('/add_product')
 def add_product():
     return render_template("add_product.html")
 
-
+@app.route('/log_out')
+@app.route('/log_out', methods=["POST"])
+def exit():
+    temp = {}
+    with open("cookies.json", "w") as file:
+        json.dump(temp, file, indent=3)
+    return redirect(url_for("login"))
+        
 @app.route('/products')
 @app.route('/products', methods=["POST"])
 def products():
@@ -77,7 +106,7 @@ def products():
                 print(request.form['delete_name'])
                 with open("products.json", "w") as file:
                     json.dump(temp, file, indent=3)
-                
+
     spisok = []
     for name in temp:
         spisok.append(Product(temp[name]['photo'], name, temp[name]['price']))
