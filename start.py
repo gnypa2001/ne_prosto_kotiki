@@ -8,6 +8,9 @@ app = Flask("Grocery")
 def home_page():
     return render_template("index.html")
 
+@app.route("/owner")
+def owner_page():
+    return render_template("owner.html")
 
 @app.route('/register')
 def register():
@@ -47,7 +50,7 @@ def home():
     else:
         return render_template("error_notification.html", error = "Имя или пароль пустые") 
     
-    return redirect(url_for("home_page"))
+    return redirect(url_for("owner_page"))
 
 
 @app.route('/add_product')
@@ -79,6 +82,7 @@ def products():
     for name in temp:
         spisok.append(Product(temp[name]['photo'], name, temp[name]['price']))
     return render_template("products.html", spisok=spisok)
+
 
 
 
