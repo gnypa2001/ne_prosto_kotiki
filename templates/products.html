@@ -2,45 +2,7 @@
 <html>
 <head>
 	<title>Grocery Products</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            margin: 0;
-            padding: 0;
-          }
-          
-          h1 {
-            text-align: center;
-            color: #4CAF50;
-          }
-          
-          div {
-            display: inline-block;
-            width: 250px;
-            margin: 40px;
-            text-align: center;
-            border: 1px solid #ddd;
-            padding: 20px;
-            background-color: #fff;
-          }
-          
-          img {
-            max-width: 100%;
-            height: 300px;
-            margin-bottom: 10px;
-          }
-          
-          h2 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-          }
-          
-          p {
-            font-size: 1rem;
-            color: #888;
-          }
-    </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
 </head>
 <body>
 	<h1>Товары</h1>
